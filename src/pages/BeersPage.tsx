@@ -8,25 +8,22 @@ const BeersPage: React.FC = () => {
   const [data, setData] = useState<BeerInterface[]>([])
 
   useEffect(() => {
-    const arr = [...Array(30).keys()]
-    const fetchAll = async () => {
-      await Promise.all(
-        arr.map(async () => {
-          axios
-            .get(`https://api.punkapi.com/v2/beers/random`)
-            .then((res) => {
-              setData((prev) => {
-                return prev.every((i) => i.id !== res.data[0].id)
-                  ? [...prev, res.data[0]]
-                  : prev
-              })
-            })
-        })
-      )
+    if (data.length >= 30) {
+      return
     }
-
-    fetchAll()
-  }, []) // eslint-disable-line
+    const fetchMore = async () => {
+      const res = await axios.get(
+        `https://api.punkapi.com/v2/beers/random`
+      )
+      const [data] = res.data
+      setData((prev) => {
+        return prev.find((i) => i.id === data.id)
+          ? [...prev]
+          : [...prev, data]
+      })
+    }
+    fetchMore()
+  }, [data]) // eslint-disable-line
 
   return (
     <div>

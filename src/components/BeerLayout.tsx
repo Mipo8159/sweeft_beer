@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, Outlet} from 'react-router-dom'
+import {NavLink, Outlet} from 'react-router-dom'
 import {RouteEnum} from '../router/routes'
 
 const BeerLayout: React.FC = () => {
@@ -7,13 +7,28 @@ const BeerLayout: React.FC = () => {
     <div className="my-20">
       <nav className="flex justify-center py-3 space-x-10 list-none shadow-md shadow-red-200">
         <li className="font-bold uppercase">
-          <Link to={RouteEnum.BEERS_PAGE}>Catalog</Link>
+          <NavLink
+            end
+            style={({isActive}) => {
+              return isActive ? {color: 'crimson'} : {}
+            }}
+            to={RouteEnum.BEERS_PAGE}
+          >
+            Catalog
+          </NavLink>
         </li>
 
         <li className="font-bold uppercase">
-          <Link reloadDocument to={RouteEnum.BEER_RANDOM_PAGE}>
+          <NavLink
+            end
+            style={({isActive}) => {
+              return isActive ? {color: 'crimson'} : {}
+            }}
+            reloadDocument
+            to={RouteEnum.BEER_RANDOM_PAGE}
+          >
             Random
-          </Link>
+          </NavLink>
         </li>
       </nav>
       <Outlet />

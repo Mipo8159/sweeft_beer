@@ -1,16 +1,32 @@
-import React, {useState} from 'react'
+import axios from 'axios'
+import React, {useEffect, useState} from 'react'
 import {Helmet} from 'react-helmet-async'
 import BeerItem from '../components/BeerItem'
 import {BeerInterface} from '../interfaces/beer.interface'
-import {useGetBeersQuery} from '../store/beer/beer.api'
 
 const BeersPage: React.FC = () => {
-  const [page] = useState(() => Math.floor(Math.random() * 7) + 1)
+  const [data, setData] = useState<BeerInterface[]>([])
 
-  const {data} = useGetBeersQuery({
-    page: page,
-    per_page: 30,
-  })
+  useEffect(() => {
+    const arr = [...Array(30).keys()]
+    const fetchAll = async () => {
+      await Promise.all(
+        arr.map(async () => {
+          axios
+            .get(`https://api.punkapi.com/v2/beers/random`)
+            .then((res) => {
+              setData((prev) => {
+                return prev.every((i) => i.id !== res.data[0].id)
+                  ? [...prev, res.data[0]]
+                  : prev
+              })
+            })
+        })
+      )
+    }
+
+    fetchAll()
+  }, []) // eslint-disable-line
 
   return (
     <div>

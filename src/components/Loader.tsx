@@ -6,7 +6,7 @@ interface LoaderProps {
 const Loader: React.FC<LoaderProps> = ({style}) => {
   return (
     <div
-      className={`dotted-loader ${
+      className={`absolute dotted-loader ${
         style
           ? style
           : 'h-16 w-16 left-[53%] top-[53%] before:h-12 before:w-12'

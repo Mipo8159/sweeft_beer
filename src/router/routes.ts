@@ -1,6 +1,4 @@
 import React from 'react'
-import BearPage from '../pages/BearPage'
-import HopePage from '../pages/HopePage'
 
 export interface RouteInterface {
   path: string
@@ -8,12 +6,12 @@ export interface RouteInterface {
 }
 
 export enum RouteEnum {
-  HOME = '',
-  BEER_PAGE = '/beer/:id',
+  HOME_PAGE = '/',
+  ABOUT = '/about',
+
+  BEERS_PAGE = '/beers',
+  BEER_PAGE = '/beers/:id',
+  BEER_RANDOM_PAGE = '/beers/random',
+
   NAVIGATE = '*',
 }
-
-export const routes: RouteInterface[] = [
-  {path: RouteEnum.HOME, element: HopePage},
-  {path: RouteEnum.BEER_PAGE, element: BearPage},
-]

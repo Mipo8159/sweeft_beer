@@ -1,10 +1,10 @@
 import React from 'react'
 
-const About: React.FC = () => {
+const AboutPage: React.FC = () => {
   return (
     <div>
       <h1 className="mt-20 mb-8 text-2xl font-bold uppercase">
-        about this app
+        AboutPage this app
       </h1>
       <p className="mb-5 text-lg">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
@@ -88,4 +88,4 @@ const About: React.FC = () => {
   )
 }
 
-export default About
+export default AboutPage

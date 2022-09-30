@@ -9,7 +9,8 @@ export enum RouteEnum {
   HOME_PAGE = '/',
   ABOUT = '/about',
 
-  BEERS_PAGE = '/beers',
+  BEER_LIST_PAGE = '/beers',
+  BEER_CATALOG_PAGE = '/beers/catalog',
   BEER_PAGE = '/beers/:id',
   BEER_RANDOM_PAGE = '/beers/random',
 

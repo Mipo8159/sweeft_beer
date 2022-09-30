@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom'
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="fixed inset-x-0 top-0 flex justify-center py-2 mx-auto space-x-20 text-xl font-bold text-white uppercase list-none bg-yellow-600 ">
+    <nav className="fixed inset-x-0 top-0 z-10 flex justify-center py-2 mx-auto space-x-20 text-xl font-bold text-white uppercase list-none bg-yellow-600 ">
       <li>
         <NavLink
           end
@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
           style={({isActive}) => {
             return isActive ? {color: 'crimson'} : {}
           }}
-          to={RouteEnum.BEERS_PAGE}
+          to={RouteEnum.BEER_LIST_PAGE}
         >
           pub
         </NavLink>

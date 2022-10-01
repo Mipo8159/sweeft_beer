@@ -11,7 +11,10 @@ export const beerApi = createApi({
     getBeers: build.query<BeerInterface[], GetBeerRequest>({
       query: ({page, per_page}) => ({
         url: '/',
-        params: {page, per_page},
+        params: {
+          page,
+          per_page,
+        },
       }),
     }),
 

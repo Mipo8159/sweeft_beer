@@ -1,11 +1,23 @@
-import React, {useState} from 'react'
+import classNames from 'classnames'
+import React, {useState, useEffect} from 'react'
 import {Helmet} from 'react-helmet-async'
+import {useSearchParams} from 'react-router-dom'
+import BeerItem from '../components/BeerItem'
 import Loader from '../components/Loader'
-import {useGetBeersQuery} from '../store/beer/beer.api'
+import {useDebouncedFetch} from '../hooks/useDebouncedFetch'
+import {BeerInterface} from '../interfaces/beer.interface'
 
 const BeerListPage: React.FC = () => {
-  const [per_page, setPer_page] = useState<number>(30)
-  const {isLoading, data} = useGetBeersQuery({page: 1, per_page})
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [beer_name, setBeer_name] = useState<string>('')
+  const [page, setPage] = useState<string>(() => searchParams.get('page')!)
+  const [per_page, setPer_page] = useState<string>(() => searchParams.get('per_page')!)
+  const [last_page, setLast_page] = useState<number>(() => Math.ceil(325 / parseInt(per_page)))
+  const {isLoading, data} = useDebouncedFetch()
+
+  useEffect(() => {
+    setSearchParams({...(beer_name && {beer_name}), page, per_page})
+  }, [page, per_page, beer_name]) // eslint-disable-line
 
   if (isLoading) return <Loader />
 
@@ -15,20 +27,23 @@ const BeerListPage: React.FC = () => {
         <title>Bear Catalog</title>
       </Helmet>
 
-      <h1 className="my-10 text-2xl font-bold text-center uppercase">
-        Beer list
-      </h1>
+      <h1 className="my-10 text-2xl font-bold text-center uppercase">Beer list</h1>
 
-      <div>
-        <form>
-          <input className="border" type="text" />
-          <button></button>
-        </form>
+      <div className="mb-6">
+        <input
+          className="border border-gray-100 shadow-lg w-[600px] py-1.5 mr-2"
+          value={beer_name}
+          onChange={(e) => setBeer_name(e.target.value)}
+          type="text"
+        />
 
         <select
           value={per_page}
-          onChange={(e) => setPer_page(Number(e.target.value))}
-          className="border"
+          onChange={(e) => {
+            setPer_page(e.target.value)
+            setLast_page(Math.ceil(325 / parseInt(per_page)))
+          }}
+          className="w-16 px-2 text-white bg-black h-9"
         >
           <option value="15">15</option>
           <option value="30">30</option>
@@ -37,18 +52,34 @@ const BeerListPage: React.FC = () => {
         </select>
       </div>
 
-      <div className="grid grid-cols-4 gap-8 xl:px-10">
-        {/* {data?.map((beer: BeerInterface) => (
-          <BeerItem
-            key={beer.id}
-            id={beer.id}
-            name={beer.name}
-            tagline={beer.tagline}
-            image_url={beer.image_url}
-            first_brewed={beer.first_brewed}
-          />
-        ))} */}
+      <div className="grid grid-cols-5 gap-8 mb-10 xl:px-10">
+        {data &&
+          data?.map((beer: BeerInterface) => (
+            <BeerItem
+              key={beer.id}
+              id={beer.id}
+              name={beer.name}
+              tagline={beer.tagline}
+              image_url={beer.image_url}
+              first_brewed={beer.first_brewed}
+            />
+          ))}
       </div>
+
+      <ul className="flex">
+        {[...Array(last_page).keys()].map((p) => (
+          <li
+            key={p}
+            onClick={() => setPage(String(p + 1))}
+            className={classNames(
+              'flex cursor-pointer items-center justify-center w-8 h-8 mr-2 border border-black',
+              {'bg-black text-white': Number(page) === p + 1}
+            )}
+          >
+            {p + 1}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

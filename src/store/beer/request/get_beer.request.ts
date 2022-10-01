@@ -1,4 +1,5 @@
 export interface GetBeerRequest {
-  page: number
+  beer_name?: string
   per_page: number
+  page: number
 }

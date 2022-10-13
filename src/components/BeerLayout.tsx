@@ -12,7 +12,19 @@ const BeerLayout: React.FC = () => {
             style={({isActive}) => {
               return isActive ? {color: 'crimson'} : {}
             }}
-            to={RouteEnum.BEERS_PAGE}
+            to={RouteEnum.BEER_LIST_PAGE}
+          >
+            list
+          </NavLink>
+        </li>
+
+        <li className="font-bold uppercase">
+          <NavLink
+            end
+            style={({isActive}) => {
+              return isActive ? {color: 'crimson'} : {}
+            }}
+            to={RouteEnum.BEER_CATALOG_PAGE}
           >
             Catalog
           </NavLink>
@@ -24,7 +36,6 @@ const BeerLayout: React.FC = () => {
             style={({isActive}) => {
               return isActive ? {color: 'crimson'} : {}
             }}
-            reloadDocument
             to={RouteEnum.BEER_RANDOM_PAGE}
           >
             Random

@@ -1,10 +1,14 @@
 import React from 'react'
 import {Helmet} from 'react-helmet-async'
+import {useParams} from 'react-router-dom'
 import Loader from '../components/Loader'
 import {useGetBeerQuery} from '../store/beer/beer.api'
 
-const RandomBeer: React.FC = () => {
-  const {isLoading, data} = useGetBeerQuery('random')
+const BeerPage: React.FC = () => {
+  const {id} = useParams()
+  const {isLoading, data} = useGetBeerQuery(id!, {
+    skip: !id,
+  })
 
   if (isLoading) return <Loader />
   const [item] = data ? data : []
@@ -12,10 +16,10 @@ const RandomBeer: React.FC = () => {
   return (
     <div className="p-20 px-40 ">
       <Helmet>
-        <title>{item && item.name}</title>
+        <title>{data && item.name}</title>
       </Helmet>
 
-      {data && (
+      {item && (
         <div className="relative flex">
           <div className="w-1/4 h-[600px] shadow-md p-4 shadow-red-200 mr-5">
             <img
@@ -46,7 +50,7 @@ const RandomBeer: React.FC = () => {
             <div className="text-center w-[800px] mb-10 flex flex-col items-center">
               <span className="font-bold uppercase">food pairing</span>
               <ul className="list-disc text-start">
-                {item.food_pairing.map((pair) => (
+                {item.food_pairing.map((pair: string) => (
                   <li className="ml-10" key={pair}>
                     {pair}
                   </li>
@@ -78,4 +82,4 @@ const RandomBeer: React.FC = () => {
   )
 }
 
-export default RandomBeer
+export default BeerPage

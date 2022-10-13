@@ -1,22 +1,18 @@
 import React from 'react'
 import {Helmet} from 'react-helmet-async'
-import {useParams} from 'react-router-dom'
 import Loader from '../components/Loader'
-import {useGetBeerQuery} from '../store/beer/beer.api'
+import useFetchRandom from '../hooks/useFetchRandom'
 
-const BearPage: React.FC = () => {
-  const {id} = useParams()
-  const {isLoading, data} = useGetBeerQuery(id!, {
-    skip: !id,
-  })
+const RandomBeer: React.FC = () => {
+  const {isLoading, item} = useFetchRandom()
 
+  console.log(item)
   if (isLoading) return <Loader />
-  const [item] = data ? data : []
 
   return (
     <div className="p-20 px-40 ">
       <Helmet>
-        <title>{data && item.name}</title>
+        <title>{item && item.name}</title>
       </Helmet>
 
       {item && (
@@ -50,7 +46,7 @@ const BearPage: React.FC = () => {
             <div className="text-center w-[800px] mb-10 flex flex-col items-center">
               <span className="font-bold uppercase">food pairing</span>
               <ul className="list-disc text-start">
-                {item.food_pairing.map((pair) => (
+                {item.food_pairing?.map((pair: string) => (
                   <li className="ml-10" key={pair}>
                     {pair}
                   </li>
@@ -64,11 +60,12 @@ const BearPage: React.FC = () => {
               </span>
 
               <div className="flex ml-8 font-bold text-yellow-800 uppercase">
-                {Object.keys(item.ingredients).map((i) => (
-                  <span key={i} className="mr-8">
-                    {i}
-                  </span>
-                ))}
+                {item.ingredients &&
+                  Object.keys(item.ingredients)?.map((i) => (
+                    <span key={i} className="mr-8">
+                      {i}
+                    </span>
+                  ))}
               </div>
             </div>
           </div>
@@ -82,4 +79,4 @@ const BearPage: React.FC = () => {
   )
 }
 
-export default BearPage
+export default RandomBeer

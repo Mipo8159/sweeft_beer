@@ -6,7 +6,6 @@ import useFetchRandom from '../hooks/useFetchRandom'
 const RandomBeer: React.FC = () => {
   const {isLoading, item} = useFetchRandom()
 
-  console.log(item)
   if (isLoading) return <Loader />
 
   return (
@@ -27,9 +26,7 @@ const RandomBeer: React.FC = () => {
 
           <div className="flex flex-col items-center flex-1 pt-8 shadow-md shadow-yellow-200">
             <div className="text-center w-[800px] mb-8">
-              <h1 className="text-2xl font-bold text-red-800 uppercase">
-                {item.name}
-              </h1>
+              <h1 className="text-2xl font-bold text-red-800 uppercase">{item.name}</h1>
               <h3 className="font-bold text-yellow-900">{item.tagline}</h3>
             </div>
 
@@ -55,9 +52,7 @@ const RandomBeer: React.FC = () => {
             </div>
 
             <div className="text-center w-[800px] mb-10 flex flex-col items-center">
-              <span className="uppercase font-bold mb-1.5">
-                ingredients
-              </span>
+              <span className="uppercase font-bold mb-1.5">ingredients</span>
 
               <div className="flex ml-8 font-bold text-yellow-800 uppercase">
                 {item.ingredients &&

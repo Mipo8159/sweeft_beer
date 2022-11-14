@@ -6,12 +6,13 @@ import BeerItem from '../components/BeerItem'
 import Loader from '../components/Loader'
 import {useDebouncedFetch} from '../hooks/useDebouncedFetch'
 import {BeerInterface} from '../interfaces/beer.interface'
+import {CgChevronDown} from 'react-icons/cg'
 
 const BeerListPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [, setSearchParams] = useSearchParams()
   const [beer_name, setBeer_name] = useState<string>('')
-  const [page, setPage] = useState<string>(() => searchParams.get('page')!)
-  const [per_page, setPer_page] = useState<string>(() => searchParams.get('per_page')!)
+  const [page, setPage] = useState<string>('1')
+  const [per_page, setPer_page] = useState<string>('15')
   const [last_page, setLast_page] = useState<number>(() => Math.ceil(325 / parseInt(per_page)))
   const {isLoading, data} = useDebouncedFetch()
 
@@ -29,7 +30,7 @@ const BeerListPage: React.FC = () => {
 
       <h1 className="my-10 text-2xl font-bold text-center uppercase">Beer list</h1>
 
-      <div className="mb-6">
+      <div className="relative mb-6">
         <input
           className="border border-gray-100 shadow-lg w-[600px] py-1.5 mr-2"
           value={beer_name}
@@ -43,13 +44,15 @@ const BeerListPage: React.FC = () => {
             setPer_page(e.target.value)
             setLast_page(Math.ceil(325 / parseInt(per_page)))
           }}
-          className="w-16 px-2 text-white bg-black h-9"
+          className="w-16 px-2 text-white bg-black appearance-none h-9"
         >
           <option value="15">15</option>
           <option value="30">30</option>
           <option value="45">45</option>
           <option value="60">60</option>
         </select>
+
+        <CgChevronDown className="absolute text-lg text-white right-2 top-2.5" />
       </div>
 
       <div className="grid grid-cols-5 gap-8 mb-10 xl:px-10">
@@ -67,18 +70,19 @@ const BeerListPage: React.FC = () => {
       </div>
 
       <ul className="flex">
-        {[...Array(last_page).keys()].map((p) => (
-          <li
-            key={p}
-            onClick={() => setPage(String(p + 1))}
-            className={classNames(
-              'flex cursor-pointer items-center justify-center w-8 h-8 mr-2 border border-black',
-              {'bg-black text-white': Number(page) === p + 1}
-            )}
-          >
-            {p + 1}
-          </li>
-        ))}
+        {last_page &&
+          [...Array(last_page).keys()].map((p) => (
+            <li
+              key={p}
+              onClick={() => setPage(String(p + 1))}
+              className={classNames(
+                'flex cursor-pointer items-center justify-center w-8 h-8 mr-2 border border-black',
+                {'bg-black text-white': Number(page) === p + 1}
+              )}
+            >
+              {p + 1}
+            </li>
+          ))}
       </ul>
     </div>
   )
